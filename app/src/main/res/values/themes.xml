@@ -1,0 +1,38 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Skyfall" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color (Deep Orange for sunset feel). -->
+        <item name="colorPrimary">@color/deep_orange_500</item>
+        <item name="colorPrimaryVariant">@color/deep_orange_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color (Sunset yellow). -->
+        <item name="colorSecondary">@color/sunset_yellow_500</item>
+        <item name="colorSecondaryVariant">@color/sunset_yellow_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- Background for the sunset gradient. -->
+        <item name="android:windowBackground">@drawable/sunset_gradient</item>
+
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- No Action Bar theme (same sunset palette). -->
+    <style name="Theme.Skyfall.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Overlay styles. -->
+    <style name="Theme.Skyfall.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Skyfall.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Skyfall" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+</resources>
