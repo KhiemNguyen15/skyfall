@@ -1,26 +1,18 @@
 package com.github.skyfall.data.model;
 
-import com.google.firebase.auth.FirebaseUser;
-
 public class User {
-
-    // User variable contains profile picture and the user id
-    private FirebaseUser user;
+    private String uid;
     private String displayName;
-    private String fcmToken;
+    private String photoURL;
 
-    public User(FirebaseUser user, String displayName, String fcmToken) {
-        this.user = user;
-        this.displayName = displayName;
-        this.fcmToken = fcmToken;
+    public User() {}
+
+    public String getUid() {
+        return uid;
     }
 
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getDisplayName() {
@@ -31,7 +23,11 @@ public class User {
         this.displayName = displayName;
     }
 
-    public FirebaseUser getUser() {
-        return user;
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 }
