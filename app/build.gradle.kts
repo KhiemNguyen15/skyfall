@@ -58,8 +58,10 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.functions)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.storage)
     implementation(libs.firebase.ui.auth)
 
     // Other dependencies
     implementation(libs.gson)
+    implementation(libs.tika.core)
 }
