@@ -8,6 +8,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 import org.apache.tika.Tika;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
@@ -119,5 +121,17 @@ public class FirebaseManager {
                 .build();
 
         return fileRef.putFile(fileUri, metadata);
+    }
+
+    public FileDownloadTask downloadFile(ShareRequest shareRequest) throws IOException {
+        StorageReference storageRef = mStorage.getReference();
+        StorageReference fileRef = storageRef.child(shareRequest.getFileUri());
+
+        String fileType = shareRequest.getFileType()
+                .substring(shareRequest.getFileType().lastIndexOf("/") + 1);
+
+        File localFile = File.createTempFile(fileRef.getName(), fileType);
+
+        return fileRef.getFile(localFile);
     }
 }
