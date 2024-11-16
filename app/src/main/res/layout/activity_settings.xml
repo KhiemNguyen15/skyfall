@@ -17,23 +17,23 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:src="@drawable/skyfall_logo"/>
+            android:src="@drawable/skyfall_logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="40dp"
+            android:fontFamily="sans-serif-condensed"
             android:text="@string/settings_title"
             android:textColor="@color/black"
-            android:fontFamily="sans-serif-condensed"
             android:textSize="40sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <FrameLayout
             android:id="@+id/idFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        
+
     </LinearLayout>
 </ScrollView>
