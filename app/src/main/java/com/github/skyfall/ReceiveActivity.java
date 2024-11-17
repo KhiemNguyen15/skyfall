@@ -49,7 +49,7 @@ public class ReceiveActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<List<ShareRequest>> task) {
                         if (!task.isSuccessful()) {
-                            // Handle failure
+                            // Handle fa`ilure
                             Toast.makeText(ReceiveActivity.this, "Failed to load requests", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -63,6 +63,22 @@ public class ReceiveActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void onDownloadRequest(ShareRequest request) {
+        try {
+            firebaseManager.downloadFile(request)
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            // Handle failure
+                            Toast.makeText(ReceiveActivity.this, "Failed to download file", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
+                        // File downloaded successfully
+                        Toast.makeText(ReceiveActivity.this, "File downloaded successfully", Toast.LENGTH_SHORT).show();
+                    });
+        } catch (Exception e) {
+            Toast.makeText(this, "Error downloading file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
