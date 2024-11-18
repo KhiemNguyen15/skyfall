@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.ui.firestore)
 
     // Other dependencies
     implementation(libs.gson)
