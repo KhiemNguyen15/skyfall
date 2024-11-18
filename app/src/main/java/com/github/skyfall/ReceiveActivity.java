@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReceiveActivity extends AppCompatActivity {
-
     private ActivityReceiveBinding binding;
     private FirebaseManager firebaseManager;
     private ShareRequestAdapter adapter;
@@ -83,7 +82,6 @@ public class ReceiveActivity extends AppCompatActivity {
 
                 // Save the file to the public storage
                 saveFileToPublicStorage(downloadedFile, fileName);
-
             });
         } catch (Exception e) {
             Toast.makeText(this, "Error downloading file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -108,5 +106,4 @@ public class ReceiveActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
-
 }

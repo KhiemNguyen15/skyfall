@@ -7,8 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.skyfall.ui.send.SendActivity;
-
+import com.github.skyfall.ui.send.SendActivity;;
 
 public class MainActivity extends AppCompatActivity {
     @Override
