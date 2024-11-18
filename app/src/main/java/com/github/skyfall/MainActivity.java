@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Message Received.", Toast.LENGTH_LONG).show();
-                //startActivity(new Intent(this, ReceiveActivity.class);
+                startActivity(new Intent(getApplicationContext(), ReceiveActivity.class));
             }
         });
 
