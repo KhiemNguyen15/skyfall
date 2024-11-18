@@ -14,7 +14,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.skyfall.databinding.ActivityMainBinding;
-import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
@@ -32,13 +31,6 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .setAnchorView(R.id.fab).show());
-
-        // New FAB action to navigate to ReceiveActivity
-        binding.appBarMain.fabReceive.setOnClickListener(view -> {
-            // Navigate to ReceiveActivity
-            Intent intent = new Intent(MainActivity.this, ReceiveActivity.class);
-            startActivity(intent);
-        });
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
