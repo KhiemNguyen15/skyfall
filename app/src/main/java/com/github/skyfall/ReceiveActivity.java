@@ -2,6 +2,7 @@ package com.github.skyfall;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class ReceiveActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         firebaseManager = FirebaseManager.getInstance();
+
         adapter = new ShareRequestAdapter(new ArrayList<>(), this::onDownloadRequest);
 
         // Set up RecyclerView
@@ -44,25 +46,24 @@ public class ReceiveActivity extends AppCompatActivity {
     }
 
     private void fetchRequests() {
-        firebaseManager.getIncomingRequests()
-                .addOnCompleteListener(new OnCompleteListener<List<ShareRequest>>() {
-                    @Override
-                    public void onComplete(@NonNull Task<List<ShareRequest>> task) {
-                        if (!task.isSuccessful()) {
-                            // Handle fa`ilure
-                            Toast.makeText(ReceiveActivity.this, "Failed to load requests", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        List<ShareRequest> shareRequests = task.getResult();
-
-                        if (shareRequests != null && !shareRequests.isEmpty()) {
-                            adapter.updateData(shareRequests);
-                        } else {
-                            Toast.makeText(ReceiveActivity.this, "No incoming requests", Toast.LENGTH_SHORT).show();
-                        }
+        firebaseManager.getIncomingRequests().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<ShareRequest> requests = task.getResult();
+                if (requests != null) {
+                    Log.d("ShareRequests", "Fetched " + requests.size() + " requests");
+                    for (ShareRequest request : requests) {
+                        Log.d("ShareRequests", "File: " + request.getFileUri());
                     }
-                });
+                } else {
+                    Log.d("ShareRequests", "No requests found.");
+                }
+            } else {
+                Log.e("ShareRequests", "Error fetching requests", task.getException());
+            }
+        });
     }
+
+    //Error fetching requests : com.google.firebase.functions.FirebaseFunctionsException: Unauthenticated
     private void onDownloadRequest(ShareRequest request) {
         try {
             firebaseManager.downloadFile(request)
