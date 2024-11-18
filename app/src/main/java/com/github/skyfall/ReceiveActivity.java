@@ -49,17 +49,13 @@ public class ReceiveActivity extends AppCompatActivity {
         firebaseManager.getIncomingRequests().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<ShareRequest> requests = task.getResult();
-                if (requests != null && !requests.isEmpty()) {
+                if (requests != null) {
                     Log.d("ShareRequests", "Fetched " + requests.size() + " requests");
                     for (ShareRequest request : requests) {
                         Log.d("ShareRequests", "File: " + request.getFileUri());
                     }
-                    // Update the adapter with the new requests
-                    adapter.updateData(requests);
                 } else {
                     Log.d("ShareRequests", "No requests found.");
-                    // Optionally clear the adapter if no requests are found
-                    adapter.updateData(new ArrayList<>());
                 }
             } else {
                 Log.e("ShareRequests", "Error fetching requests", task.getException());
