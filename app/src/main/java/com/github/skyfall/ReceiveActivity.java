@@ -5,20 +5,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.skyfall.data.model.FirebaseManager;
 import com.github.skyfall.data.model.ShareRequest;
 import com.github.skyfall.databinding.ActivityReceiveBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class ReceiveActivity extends AppCompatActivity {
 
@@ -66,17 +61,22 @@ public class ReceiveActivity extends AppCompatActivity {
     //Error fetching requests : com.google.firebase.functions.FirebaseFunctionsException: Unauthenticated
     private void onDownloadRequest(ShareRequest request) {
         try {
-            firebaseManager.downloadFile(request)
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            // Handle failure
-                            Toast.makeText(ReceiveActivity.this, "Failed to download file", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+            firebaseManager.downloadFile(request).addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    // Handle failure
+                    Toast.makeText(
+                            ReceiveActivity.this,
+                            "Failed to download file",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                        // File downloaded successfully
-                        Toast.makeText(ReceiveActivity.this, "File downloaded successfully", Toast.LENGTH_SHORT).show();
-                    });
+                // File downloaded successfully
+                Toast.makeText(
+                        ReceiveActivity.this,
+                        "File downloaded successfully",
+                        Toast.LENGTH_SHORT).show();
+            });
         } catch (Exception e) {
             Toast.makeText(this, "Error downloading file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
