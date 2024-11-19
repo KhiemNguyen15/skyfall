@@ -33,9 +33,10 @@
 
         <EditText
             android:id="@+id/username_input"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:gravity="start"
             android:hint="UserName"
             android:padding="10dp"
             android:textSize="20sp"
@@ -43,14 +44,14 @@
 
         <ImageButton
             android:id="@+id/searchicon_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/username_input"
+            android:layout_alignRight="@id/username_input"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="fitCenter"
             android:src="@drawable/searchicon"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"/>
 
     </RelativeLayout>
     

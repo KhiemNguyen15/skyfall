@@ -62,4 +62,5 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="username">Username</string>
+    <string name="send_file">Send File</string>
 </resources>

@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.skyfall.ui.send.SendActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Message Sent.", Toast.LENGTH_LONG).show();
-                //startActivity(new Intent(this, SendActivity.class);
+                startActivity(new Intent(getApplicationContext(), SendActivity.class));
             }
         });
 
