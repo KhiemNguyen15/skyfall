@@ -46,6 +46,7 @@ public class ReceiveActivity extends AppCompatActivity {
                 List<ShareRequest> requests = task.getResult();
                 if (requests != null) {
                     Log.d("ShareRequests", "Fetched " + requests.size() + " requests");
+                    adapter.updateData(requests);
                     for (ShareRequest request : requests) {
                         Log.d("ShareRequests", "File: " + request.getFileUri());
                     }
