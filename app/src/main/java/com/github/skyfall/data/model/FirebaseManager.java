@@ -1,5 +1,7 @@
 package com.github.skyfall.data.model;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 
@@ -14,8 +16,6 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
-
-import org.apache.tika.Tika;
 
 import java.io.File;
 import java.io.IOException;
@@ -95,20 +95,19 @@ public class FirebaseManager {
                 .continueWith(task -> null);
     }
 
-    public UploadTask sendFile(File file, String recipientUid) {
+    public UploadTask sendFile(Uri fileUri, String recipientUid, Context context) {
         StorageReference storageRef = mStorage.getReference();
 
-        Uri fileUri = Uri.fromFile(file);
         StorageReference fileRef = storageRef.child(
                 String.format(
                         "users/%s/%s",
                         Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
                         fileUri.getLastPathSegment()));
 
-        Tika tika = new Tika();
-        String fileType = "";
+        String fileType;
         try {
-            fileType = tika.detect(file);
+            ContentResolver cR = context.getContentResolver();
+            fileType = cR.getType(fileUri);
         } catch (Exception ignored) {
             fileType = "unknown";
         }
