@@ -63,4 +63,5 @@
     </string>
     <string name="username">Username</string>
     <string name="send_file">Send File</string>
+    <string name="send_page_title">SEND PAGE</string>
 </resources>

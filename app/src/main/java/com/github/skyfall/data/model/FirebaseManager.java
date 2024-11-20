@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
-import android.webkit.MimeTypeMap;
 
 import com.google.android.gms.tasks.Task;
 import com.google.common.reflect.TypeToken;
@@ -105,7 +104,7 @@ public class FirebaseManager {
                         Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
                         fileUri.getLastPathSegment()));
 
-        String fileType = "";
+        String fileType;
         try {
             ContentResolver cR = context.getContentResolver();
             fileType = cR.getType(fileUri);

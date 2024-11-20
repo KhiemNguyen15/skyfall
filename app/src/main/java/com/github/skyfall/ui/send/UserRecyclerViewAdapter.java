@@ -16,7 +16,6 @@ import com.github.skyfall.data.model.User;
 import java.util.ArrayList;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.UserModelViewHolder>{
-
     ArrayList<User> users;
     static SendActivity sendActivity;
 
@@ -28,7 +27,9 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @NonNull
     @Override
     public UserModelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_user_recycler_rows, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.search_user_recycler_rows, parent, false);
+
         return new UserModelViewHolder(view);
     }
 
@@ -61,13 +62,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             profilePicture = itemView.findViewById(R.id.profile_picture_view);
             sendFileButton = itemView.findViewById(R.id.recyclerRowButton);
 
-            sendFileButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    sendActivity.sendUserFile();
-                }
-            });
+            sendFileButton.setOnClickListener(v -> sendActivity.sendUserFile());
         }
     }
 }
