@@ -14,6 +14,7 @@
     <string name="download_icon">Download</string>
     <string name="receive_page_title">Receive Page</string>
     <string name="receive_page_icon">Receive</string>
+    <string name="delete_request">delete</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>

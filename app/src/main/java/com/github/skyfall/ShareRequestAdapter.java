@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,8 +62,29 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
         });
 
         // Bind file name
-        String fileName = request.getFileUri().replaceFirst("files/", "");
+        String fileName = request.getFileUri().substring(request.getFileUri().lastIndexOf('/') + 1);
         holder.fileTypeTextView.setText(fileName);
+
+        // Bind timestamp
+        if (request.getTimestamp() != null) {
+            String formattedTimestamp = request.getTimestamp().getFormattedTimestamp();
+            holder.timestampTextView.setText(formattedTimestamp);
+        } else {
+            holder.timestampTextView.setText("Unknown Timestamp");
+        }
+
+        holder.deleteButton.setOnClickListener(v -> {
+            firebaseManager.deleteFile(request.getFileUri()).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+
+                    shareRequests.remove(position);
+                    notifyItemRemoved(position);
+                    Toast.makeText(holder.itemView.getContext(), "File deleted successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(holder.itemView.getContext(), "Failed to delete file", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
 
         // Set up download button action
         holder.downloadIcon.setOnClickListener(v -> {
@@ -81,6 +103,8 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
         private final TextView deviceTextView;
         private final TextView fileTypeTextView;
         private final ImageButton downloadIcon;
+        private final TextView timestampTextView;
+        private final ImageButton deleteButton;
 
 
         public ViewHolder(ItemShareRequestBinding binding) {
@@ -88,6 +112,8 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
             deviceTextView = binding.deviceTextView;
             fileTypeTextView = binding.fileTypeTextView;
             downloadIcon = binding.downloadIcon;
+            timestampTextView =binding.timestampTextView;
+            deleteButton = binding.deleteButton;
         }
     }
 }

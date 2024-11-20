@@ -134,4 +134,9 @@ public class FirebaseManager {
 
         return fileRef.getFile(localFile);
     }
+
+    public Task<Void> deleteFile(String fileUri) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(fileUri);
+        return storageRef.delete();
+    }
 }
