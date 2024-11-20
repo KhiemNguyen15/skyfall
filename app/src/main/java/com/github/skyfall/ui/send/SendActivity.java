@@ -1,32 +1,29 @@
-package com.github.skyfall.ui.send;
+package com.github.skyfall.ui.send;  
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.github.skyfall.R;
 import com.github.skyfall.data.model.FirebaseManager;
 import com.github.skyfall.data.model.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.UploadTask;
 
-import java.net.URI;
 import java.util.ArrayList;
 
 public class SendActivity extends AppCompatActivity {
@@ -34,13 +31,34 @@ public class SendActivity extends AppCompatActivity {
     EditText searchInput;
     ImageButton searchButton;
     RecyclerView recyclerView;
-    //SearchUserRecyclerAdapter adapter;
     UserRecyclerViewAdapter adapter;
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    Log.d("demo", "Path: " + uri.getPath());
 
-    /*public static CollectionReference allUserCollectionReference(){
-        return FirebaseFirestore.getInstance().collection("users");
-    }*/
+                    Task<User> userTask = FirebaseManager.getInstance().getUser(searchInput.getText().toString());
 
+                    userTask.addOnCompleteListener(result -> {
+                        User user = result.getResult();
+
+                        UploadTask uploadTask = FirebaseManager.getInstance().sendFile(uri, user.getUid(), getApplicationContext());
+
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                Toast.makeText(getApplicationContext(), "File was unable to be sent.", Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(getApplicationContext(), "File has been sent.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    });
+                }
+            });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,88 +82,24 @@ public class SendActivity extends AppCompatActivity {
                 setupSearchRecyclerView(searchTerm);
             }
         });
-
-        Intent intent = getIntent();
-        if(intent != null) {
-            String action = intent.getAction();
-            String type = intent.getType();
-
-            if(Intent.ACTION_SEND.equals(action) && type != null) {
-                if(type.equalsIgnoreCase("text/plain"))
-                    handleTextData(intent);
-                else if(type.equalsIgnoreCase("image/"))
-                    handleImageData(intent);
-                else if(type.equalsIgnoreCase("application/pdf"))
-                    handlePdfData(intent);
-            } else if(Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
-                if(type.startsWith("image/"))
-                    handleMultipleImageData(intent);
-            }
-        }
     }
-
-    private void handlePdfData(Intent intent) {
-        Uri pdfFile = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if(pdfFile != null)
-            Log.d("Pdf File Path: ", "" + pdfFile.getPath());
-
-    }
-
-    private void handleImageData(Intent intent) {
-        Uri imageFile = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if(imageFile != null)
-            Log.d("Image File Path: ", "" + imageFile.getPath());
-    }
-
-    private void handleTextData(Intent intent) {
-        String textData = intent.getStringExtra(Intent.EXTRA_STREAM);
-        if(textData != null)
-            Log.d("Text Data: ", "" + textData);
-    }
-    private void handleMultipleImageData(Intent intent) {
-        ArrayList<Uri> imageList = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-        if(imageList != null)
-            for(Uri uri : imageList)
-                Log.d("Path: ", "" + uri.getPath());
-
-    }
-
     void setupSearchRecyclerView(String searchTerm){
-
-        //Query query = allUserCollectionReference().whereGreaterThanOrEqualTo("username", searchTerm);
 
         ArrayList<User> users = new ArrayList<>();
         Task<User> u = FirebaseManager.getInstance().getUser(searchTerm);
 
-        u.addOnSuccessListener(result -> {
-            Log.d("demo", "addOnSuccessListener happened.");
-            users.add(u.getResult());
-            adapter = new UserRecyclerViewAdapter(users);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(adapter);
+        u.addOnCompleteListener(result -> {
+            try {
+                users.add(u.getResult());
+                adapter = new UserRecyclerViewAdapter(users, this);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setAdapter(adapter);
+            }catch(Exception e){
+                Toast.makeText(this, "User does not exist", Toast.LENGTH_LONG).show();
+            }
         });
-        //FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>().setQuery(query, User.class).build();
     }
-
-    /*protected void onStart(){
-        super.onStart();
-        if (adapter!=null){
-            adapter.startListening();
-        }
+    public void sendUserFile() {
+        mGetContent.launch("image/*");
     }
-
-    protected void onStop(){
-        super.onStop();
-        if (adapter!=null){
-            adapter.stopListening();
-        }
-    }
-
-    protected void onResume(){
-        super.onResume();
-        if (adapter!=null){
-            adapter.startListening();
-        }
-    }*/
-
 }

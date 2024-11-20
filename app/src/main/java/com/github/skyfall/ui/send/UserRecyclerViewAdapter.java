@@ -1,7 +1,5 @@
 package com.github.skyfall.ui.send;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +18,11 @@ import java.util.ArrayList;
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.UserModelViewHolder>{
 
     ArrayList<User> users;
+    static SendActivity sendActivity;
 
-    public UserRecyclerViewAdapter(ArrayList<User> data) {
+    public UserRecyclerViewAdapter(ArrayList<User> data, SendActivity sendActivity) {
         this.users = data;
+        this.sendActivity = sendActivity;
     }
 
     @NonNull
@@ -51,7 +51,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         TextView userNameText;
         TextView userID;
         ImageView profilePicture;
-        Button sendFile;
+        Button sendFileButton;
         User user;
 
         public UserModelViewHolder(@NonNull View itemView) {
@@ -59,15 +59,15 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             userNameText = itemView.findViewById(R.id.username_text);
             userID = itemView.findViewById(R.id.userID);
             profilePicture = itemView.findViewById(R.id.profile_picture_view);
-            sendFile = itemView.findViewById(R.id.recyclerRowButton);
+            sendFileButton = itemView.findViewById(R.id.recyclerRowButton);
 
-            sendFile.setOnClickListener(new View.OnClickListener() {
+            sendFileButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("demo", "IT WORKS WOOOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!!!!!");
+
+                    sendActivity.sendUserFile();
                 }
             });
         }
     }
-
 }

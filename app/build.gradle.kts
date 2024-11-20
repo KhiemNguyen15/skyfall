@@ -64,5 +64,4 @@ dependencies {
 
     // Other dependencies
     implementation(libs.gson)
-    implementation(libs.tika.core)
 }
