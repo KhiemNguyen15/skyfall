@@ -72,11 +72,25 @@ public class FirebaseManager {
                 .continueWith(task -> null);
     }
 
-    public Task<User> getUser(String name) {
+    public Task<User> getUserByName(String name) {
         Map<String, Object> data = new HashMap<>();
         data.put("displayName", name);
 
         return mFunctions.getHttpsCallable("getUserByName")
+                .call(data)
+                .continueWith(task -> {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(task.getResult().getData());
+
+                    return gson.fromJson(json, User.class);
+                });
+    }
+
+    public Task<User> getUserByUid(String uid) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("uid", uid);
+
+        return mFunctions.getHttpsCallable("getUserByUid")
                 .call(data)
                 .continueWith(task -> {
                     Gson gson = new Gson();
