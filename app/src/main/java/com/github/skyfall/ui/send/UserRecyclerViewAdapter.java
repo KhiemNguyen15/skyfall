@@ -38,7 +38,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         User user = users.get(position);
         holder.userNameText.setText(user.getDisplayName());
         holder.profilePicture.setImageURI(user.getPhotoURL());
-        //holder.userID.setText(user.getUid());
         holder.user = user;
     }
 
@@ -58,7 +57,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         public UserModelViewHolder(@NonNull View itemView) {
             super(itemView);
             userNameText = itemView.findViewById(R.id.username_text);
-            //userID = itemView.findViewById(R.id.userID);
             profilePicture = itemView.findViewById(R.id.profile_picture_view);
             sendFileButton = itemView.findViewById(R.id.recyclerRowButton);
 
