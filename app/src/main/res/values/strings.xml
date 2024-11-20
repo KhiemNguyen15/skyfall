@@ -65,4 +65,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="username">Username</string>
+    <string name="send_file">Send File</string>
+    <string name="send_page_title">SEND PAGE</string>
 </resources>

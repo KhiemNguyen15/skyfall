@@ -2,15 +2,15 @@ package com.github.skyfall;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.skyfall.ui.send.SendActivity;
+
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,20 +21,14 @@ public class MainActivity extends AppCompatActivity {
         ImageButton sendButton = findViewById(R.id.sendButton);
         ImageButton receiveButton = findViewById(R.id.receiveButton);
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Message Sent.", Toast.LENGTH_LONG).show();
-                //startActivity(new Intent(this, SendActivity.class);
-            }
+        sendButton.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Message Sent.", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), SendActivity.class));
         });
 
-        receiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Message Received.", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), ReceiveActivity.class));
-            }
+        receiveButton.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Message Received.", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), ReceiveActivity.class));
         });
 
         //Make sidebar for hamburger button and notification button

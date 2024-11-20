@@ -1,9 +1,11 @@
 package com.github.skyfall.data.model;
 
+import android.net.Uri;
+
 public class User {
     private String uid;
     private String displayName;
-    private String photoURL;
+    private Uri photoURL;
 
     public User() {}
 
@@ -23,11 +25,11 @@ public class User {
         this.displayName = displayName;
     }
 
-    public String getPhotoURL() {
+    public Uri getPhotoURL() {
         return photoURL;
     }
 
-    public void setPhotoURL(String photoURL) {
+    public void setPhotoURL(Uri photoURL) {
         this.photoURL = photoURL;
     }
 }
