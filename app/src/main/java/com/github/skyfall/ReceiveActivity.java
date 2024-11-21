@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ReceiveActivity extends AppCompatActivity {
     private ActivityReceiveBinding binding;
@@ -70,9 +71,11 @@ public class ReceiveActivity extends AppCompatActivity {
             firebaseManager.downloadFile(request).addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     // Handle failure
-                    Toast.makeText(ReceiveActivity.this, "Failed to download file: " + task.getException().getMessage(),
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    Toast.makeText(
+                            ReceiveActivity.this,
+                            String.format("Failed to download file: %s",
+                                    Objects.requireNonNull(task.getException()).getMessage()),
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
 
