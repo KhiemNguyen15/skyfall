@@ -1,14 +1,12 @@
 package com.github.skyfall.data.model;
 
-import java.util.Date;
-
 public class ShareRequest {
     private String senderUid;
     private String recipientUid;
     private String fileUri;
     private String fileType;
     private String deviceType;
-    private Date timestamp;
+    private Timestamp timestamp;
 
     public ShareRequest() {}
 
@@ -52,11 +50,11 @@ public class ShareRequest {
         this.deviceType = deviceType;
     }
 
-    public Date getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 }

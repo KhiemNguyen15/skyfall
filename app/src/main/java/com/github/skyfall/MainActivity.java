@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.skyfall.ui.send.SendActivity;
-
+import com.github.skyfall.ui.receive.ReceiveActivity;
+import com.github.skyfall.ui.send.SendActivity;;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         receiveButton.setOnClickListener(v -> {
             Toast.makeText(MainActivity.this, "Message Received.", Toast.LENGTH_LONG).show();
-            //startActivity(new Intent(this, ReceiveActivity.class);
+            startActivity(new Intent(getApplicationContext(), ReceiveActivity.class));
         });
 
         //Make sidebar for hamburger button and notification button
