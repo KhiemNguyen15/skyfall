@@ -137,14 +137,15 @@ public class FirebaseManager {
         return fileRef.putFile(fileUri, metadata);
     }
 
-
     public Task<File> downloadFile(ShareRequest shareRequest) throws IOException {
         StorageReference storageRef = mStorage.getReference();
         StorageReference fileRef = storageRef.child(shareRequest.getFileUri());
 
         // Extract file extension
-        String fileType = shareRequest.getFileType().substring(shareRequest.getFileType().lastIndexOf("/") + 1);
-        String originalFileName = shareRequest.getFileUri().substring(shareRequest.getFileUri().lastIndexOf('/') + 1);
+        String fileType = shareRequest.getFileType()
+                .substring(shareRequest.getFileType().lastIndexOf("/") + 1);
+        String originalFileName = shareRequest.getFileUri()
+                .substring(shareRequest.getFileUri().lastIndexOf('/') + 1);
 
         // Build the final file name with the correct extension
         String baseFileName = originalFileName + "." + fileType;
@@ -157,7 +158,7 @@ public class FirebaseManager {
             if (task.isSuccessful()) {
                 return Tasks.forResult(finalFile); // Return the downloaded file
             } else {
-                throw task.getException();
+                throw Objects.requireNonNull(task.getException());
             }
         });
     }

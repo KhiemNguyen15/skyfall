@@ -1,5 +1,4 @@
-package com.github.skyfall;
-
+package com.github.skyfall.ui.receive;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -81,7 +80,8 @@ public class ReceiveActivity extends AppCompatActivity {
 
                 // File downloaded successfully
                 File downloadedFile = task.getResult(); // Get the downloaded file
-                String fileName = request.getFileUri().substring(request.getFileUri().lastIndexOf('/') + 1);
+                String fileName = request.getFileUri()
+                        .substring(request.getFileUri().lastIndexOf('/') + 1);
 
                 // Save the file to the public storage
                 saveFileToPublicStorage(downloadedFile, fileName);

@@ -1,4 +1,4 @@
-package com.github.skyfall;
+package com.github.skyfall.ui.receive;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapter.ViewHolder> {
-    private List<ShareRequest> shareRequests;
+    private final List<ShareRequest> shareRequests;
     private final OnDownloadListener onDownloadListener;
 
     public interface OnDownloadListener {
@@ -64,30 +64,7 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
         });
 
         // Bind file name
-        String fileUri = request.getFileUri();
-        int lastSlashIndex = fileUri.lastIndexOf('/');
-        String fileName;
-
-        // Extract the name from fileUri
-        if (lastSlashIndex != -1) {
-            fileName = fileUri.substring(lastSlashIndex + 1); // Get the file name without the path
-        } else {
-            fileName = "Unknown File"; // Fallback if structure is not as expected
-        }
-
-        // Extract the file extension from fileType
-        String fileType = request.getFileType();
-        String fileExtension;
-
-        // Get the extension if fileType is in the form "type/subtype"
-        if (fileType.contains("/")) {
-            fileExtension = fileType.substring(fileType.lastIndexOf('/') + 1); // Get only the extension part
-        } else {
-            fileExtension = "unknown"; // Fallback if the fileType is not in expected format
-        }
-
-        // Combine file name and extension
-        String fileNameWithExtension = fileName + "." + fileExtension;
+        String fileNameWithExtension = getFileName(request);
 
         // Set the file name in the TextView
         holder.fileTypeTextView.setText(fileNameWithExtension);
@@ -133,6 +110,34 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @NonNull
+    private static String getFileName(ShareRequest request) {
+        String fileUri = request.getFileUri();
+        int lastSlashIndex = fileUri.lastIndexOf('/');
+        String fileName;
+
+        // Extract the name from fileUri
+        if (lastSlashIndex != -1) {
+            fileName = fileUri.substring(lastSlashIndex + 1); // Get the file name without the path
+        } else {
+            fileName = "Unknown File"; // Fallback if structure is not as expected
+        }
+
+        // Extract the file extension from fileType
+        String fileType = request.getFileType();
+        String fileExtension;
+
+        // Get the extension if fileType is in the form "type/subtype"
+        if (fileType.contains("/")) {
+            fileExtension = fileType.substring(fileType.lastIndexOf('/') + 1);
+        } else {
+            fileExtension = ""; // Fallback if the fileType is not in expected format
+        }
+
+        // Combine file name and extension
+        return fileName + (!fileExtension.isEmpty() ? "." + fileExtension : "");
     }
 
     @Override

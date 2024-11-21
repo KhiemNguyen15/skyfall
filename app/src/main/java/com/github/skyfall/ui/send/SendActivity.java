@@ -2,7 +2,6 @@ package com.github.skyfall.ui.send;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -23,19 +22,17 @@ import java.util.ArrayList;
 
 public class SendActivity extends AppCompatActivity {
     private FirebaseManager firebaseManager;
-
     private EditText searchInput;
     private ImageButton searchButton;
     private RecyclerView recyclerView;
     private UserRecyclerViewAdapter adapter;
+
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<>() {
                 @Override
                 public void onActivityResult(Uri uri) {
-                    Log.d("demo", "Path: " + uri.getPath());
-
-                    firebaseManager.getUser(searchInput.getText().toString())
+                    firebaseManager.getUserByName(searchInput.getText().toString())
                             .addOnCompleteListener(result -> {
                                 User user = result.getResult();
 
@@ -79,9 +76,8 @@ public class SendActivity extends AppCompatActivity {
     }
 
     void setupSearchRecyclerView(String searchTerm) {
-
         ArrayList<User> users = new ArrayList<>();
-        Task<User> u = FirebaseManager.getInstance().getUser(searchTerm);
+        Task<User> u = firebaseManager.getUserByName(searchTerm);
 
         u.addOnCompleteListener(result -> {
             try {
