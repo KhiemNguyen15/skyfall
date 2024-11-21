@@ -59,7 +59,6 @@ public class ReceiveActivity extends AppCompatActivity {
         });
     }
 
-    //Error fetching requests : com.google.firebase.functions.FirebaseFunctionsException: Unauthenticated
     private void onDownloadRequest(ShareRequest request) {
         try {
             firebaseManager.downloadFile(request).addOnCompleteListener(task -> {

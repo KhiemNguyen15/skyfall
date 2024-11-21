@@ -1,26 +1,27 @@
 package com.github.skyfall;
+
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.skyfall.data.model.FirebaseManager;
 import com.github.skyfall.data.model.User;
 import com.github.skyfall.data.model.ShareRequest;
 import com.github.skyfall.databinding.ItemShareRequestBinding;
 
 import java.util.List;
+
 public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapter.ViewHolder> {
     private List<ShareRequest> shareRequests;
     private final OnDownloadListener onDownloadListener;
 
     public interface OnDownloadListener {
-        void onDownload(ShareRequest request);
+        void onDownloadRequest(ShareRequest request);
     }
 
     public ShareRequestAdapter(List<ShareRequest> shareRequests, OnDownloadListener listener) {
@@ -48,7 +49,7 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
 
         // Get displayName using senderUid
         FirebaseManager firebaseManager = FirebaseManager.getInstance();
-        firebaseManager.getUser(request.getSenderUid()).addOnCompleteListener(task -> {
+        firebaseManager.getUserByUid(request.getSenderUid()).addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 User user = task.getResult();
                 String displayName = user.getDisplayName();
@@ -62,8 +63,33 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
         });
 
         // Bind file name
-        String fileName = request.getFileUri().substring(request.getFileUri().lastIndexOf('/') + 1);
-        holder.fileTypeTextView.setText(fileName);
+        String fileUri = request.getFileUri();
+        int lastSlashIndex = fileUri.lastIndexOf('/');
+        String fileName;
+
+        // Extract the name from fileUri
+        if (lastSlashIndex != -1) {
+            fileName = fileUri.substring(lastSlashIndex + 1); // Get the file name without the path
+        } else {
+            fileName = "Unknown File"; // Fallback if structure is not as expected
+        }
+
+        // Extract the file extension from fileType
+        String fileType = request.getFileType();
+        String fileExtension;
+
+        // Get the extension if fileType is in the form "type/subtype"
+        if (fileType.contains("/")) {
+            fileExtension = fileType.substring(fileType.lastIndexOf('/') + 1); // Get only the extension part
+        } else {
+            fileExtension = "unknown"; // Fallback if the fileType is not in expected format
+        }
+
+        // Combine file name and extension
+        String fileNameWithExtension = fileName + "." + fileExtension;
+
+        // Set the file name in the TextView
+        holder.fileTypeTextView.setText(fileNameWithExtension);
 
         // Bind timestamp
         if (request.getTimestamp() != null) {
@@ -89,9 +115,9 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
         // Set up download button action
         holder.downloadIcon.setOnClickListener(v -> {
             // Call the onDownloadListener when the icon is clicked
-            onDownloadListener.onDownload(request);
+            onDownloadListener.onDownloadRequest(request);
 
-    });
+        });
     }
 
     @Override
@@ -106,13 +132,12 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
         private final TextView timestampTextView;
         private final ImageButton deleteButton;
 
-
         public ViewHolder(ItemShareRequestBinding binding) {
             super(binding.getRoot());
             deviceTextView = binding.deviceTextView;
             fileTypeTextView = binding.fileTypeTextView;
             downloadIcon = binding.downloadIcon;
-            timestampTextView =binding.timestampTextView;
+            timestampTextView = binding.timestampTextView;
             deleteButton = binding.deleteButton;
         }
     }
