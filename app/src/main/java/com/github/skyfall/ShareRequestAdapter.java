@@ -14,6 +14,7 @@ import com.github.skyfall.data.model.User;
 import com.github.skyfall.data.model.ShareRequest;
 import com.github.skyfall.databinding.ItemShareRequestBinding;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapter.ViewHolder> {
@@ -105,9 +106,9 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
 
                     shareRequests.remove(position);
                     notifyItemRemoved(position);
-                    Toast.makeText(holder.itemView.getContext(), "File deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(holder.itemView.getContext(), "Denied Request", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(holder.itemView.getContext(), "Failed to delete file", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(holder.itemView.getContext(), "Failed to Deny Request", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -117,6 +118,20 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
             // Call the onDownloadListener when the icon is clicked
             onDownloadListener.onDownloadRequest(request);
 
+            // Simulate the removal of the item from the list after download completes
+            try {
+                firebaseManager.downloadFile(request).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        shareRequests.remove(position);
+                        notifyItemRemoved(position);
+                        Toast.makeText(holder.itemView.getContext(), "File Downloaded", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(holder.itemView.getContext(), "Download Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
