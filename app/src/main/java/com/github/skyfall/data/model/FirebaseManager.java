@@ -4,13 +4,14 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -72,11 +73,25 @@ public class FirebaseManager {
                 .continueWith(task -> null);
     }
 
-    public Task<User> getUser(String name) {
+    public Task<User> getUserByName(String name) {
         Map<String, Object> data = new HashMap<>();
         data.put("displayName", name);
 
         return mFunctions.getHttpsCallable("getUserByName")
+                .call(data)
+                .continueWith(task -> {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(task.getResult().getData());
+
+                    return gson.fromJson(json, User.class);
+                });
+    }
+
+    public Task<User> getUserByUid(String uid) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("uid", uid);
+
+        return mFunctions.getHttpsCallable("getUserByUid")
                 .call(data)
                 .continueWith(task -> {
                     Gson gson = new Gson();
@@ -122,15 +137,34 @@ public class FirebaseManager {
         return fileRef.putFile(fileUri, metadata);
     }
 
-    public FileDownloadTask downloadFile(ShareRequest shareRequest) throws IOException {
+    public Task<File> downloadFile(ShareRequest shareRequest) throws IOException {
         StorageReference storageRef = mStorage.getReference();
         StorageReference fileRef = storageRef.child(shareRequest.getFileUri());
 
+        // Extract file extension
         String fileType = shareRequest.getFileType()
                 .substring(shareRequest.getFileType().lastIndexOf("/") + 1);
+        String originalFileName = shareRequest.getFileUri()
+                .substring(shareRequest.getFileUri().lastIndexOf('/') + 1);
 
-        File localFile = File.createTempFile(fileRef.getName(), fileType);
+        // Build the final file name with the correct extension
+        String baseFileName = originalFileName + "." + fileType;
 
-        return fileRef.getFile(localFile);
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File finalFile = new File(downloadsDir, baseFileName);
+
+        // Start the file download
+        return fileRef.getFile(finalFile).continueWithTask(task -> {
+            if (task.isSuccessful()) {
+                return Tasks.forResult(finalFile); // Return the downloaded file
+            } else {
+                throw Objects.requireNonNull(task.getException());
+            }
+        });
+    }
+
+    public Task<Void> deleteFile(String fileUri) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(fileUri);
+        return storageRef.delete();
     }
 }
