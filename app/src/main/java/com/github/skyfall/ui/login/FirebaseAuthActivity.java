@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
@@ -50,15 +51,21 @@ public class FirebaseAuthActivity extends AppCompatActivity {
     }
 
     public void startSignIn() {
+        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
+                .Builder(R.layout.custom_sign_in_layout)
+                .setEmailButtonId(R.id.email_button)
+                .setGoogleButtonId(R.id.google_button)
+                .build();
+
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
 
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
+                .setAuthMethodPickerLayout(customLayout)
                 .setAvailableProviders(providers)
                 .setTheme(R.style.Theme_Skyfall_NoActionBar)
-                .setLogo(R.drawable.skyfall_logo)
                 .build();
 
         signInLauncher.launch(signInIntent);
