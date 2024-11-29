@@ -38,10 +38,10 @@
         </activity>
 
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name=".ui.settings.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:exported="true" />
         <activity
             android:name=".ui.login.FirebaseAuthActivity"

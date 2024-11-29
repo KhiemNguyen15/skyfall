@@ -1,10 +1,12 @@
-package com.github.skyfall;
+package com.github.skyfall.ui.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
+
+import com.github.skyfall.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

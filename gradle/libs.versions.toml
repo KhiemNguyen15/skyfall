@@ -18,6 +18,7 @@ annotation = "1.6.0"
 activity = "1.9.3"
 preferenceKtx = "1.2.1"
 firebaseFirestore = "25.1.1"
+preference = "1.2.1"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -45,6 +46,7 @@ annotation = { group = "androidx.annotation", name = "annotation", version.ref =
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
+preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

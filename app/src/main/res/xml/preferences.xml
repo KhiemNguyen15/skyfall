@@ -28,5 +28,8 @@
         <Preference
             android:key="changePfp"
             android:title="Change Profile Picture"/>
+        <Preference
+            android:key="deleteAccount"
+            android:title="Delete Account"/>
     </PreferenceCategory>
 </PreferenceScreen>
