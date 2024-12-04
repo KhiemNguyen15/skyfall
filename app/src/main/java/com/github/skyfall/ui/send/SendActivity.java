@@ -1,7 +1,9 @@
 package com.github.skyfall.ui.send;
 
+import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import com.github.skyfall.data.model.FirebaseManager;
 import com.github.skyfall.data.model.User;
 import com.google.android.gms.tasks.Task;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class SendActivity extends AppCompatActivity {
@@ -32,6 +35,21 @@ public class SendActivity extends AppCompatActivity {
             new ActivityResultCallback<>() {
                 @Override
                 public void onActivityResult(Uri uri) {
+                    AssetFileDescriptor fileDescriptor = null;
+                    try {
+                        fileDescriptor = getApplicationContext().getContentResolver().openAssetFileDescriptor(uri , "r");
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    long fileSize = fileDescriptor.getLength();
+
+                    Log.d("demo", "File size: " + fileSize);
+
+                    if(fileSize > 50000000) {
+                        Toast.makeText(getApplicationContext(), "File exceeds size limit", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     firebaseManager.getUserByName(searchInput.getText().toString())
                             .addOnCompleteListener(result -> {
                                 User user = result.getResult();
