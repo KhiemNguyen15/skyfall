@@ -15,9 +15,9 @@ import com.github.skyfall.data.model.User;
 
 import java.util.ArrayList;
 
-public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.UserModelViewHolder>{
-    ArrayList<User> users;
-    static SendActivity sendActivity;
+public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.UserModelViewHolder> {
+    private final ArrayList<User> users;
+    private final SendActivity sendActivity;
 
     public UserRecyclerViewAdapter(ArrayList<User> data, SendActivity sendActivity) {
         this.users = data;
@@ -42,14 +42,12 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return this.users.size();
     }
 
-    static class UserModelViewHolder extends RecyclerView.ViewHolder {
-
+    class UserModelViewHolder extends RecyclerView.ViewHolder {
         TextView userNameText;
-        TextView userID;
         ImageView profilePicture;
         Button sendFileButton;
         User user;
