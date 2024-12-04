@@ -1,7 +1,9 @@
 package com.github.skyfall.ui.send;
 
+import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -21,6 +23,8 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 
 public class SendActivity extends AppCompatActivity {
+    private final long MAX_FILE_SIZE = 50_000_000;  // 50 MB
+
     private FirebaseManager firebaseManager;
     private EditText searchInput;
     private ImageButton searchButton;
@@ -32,6 +36,24 @@ public class SendActivity extends AppCompatActivity {
             new ActivityResultCallback<>() {
                 @Override
                 public void onActivityResult(Uri uri) {
+                    try (AssetFileDescriptor fileDescriptor = getApplicationContext()
+                            .getContentResolver()
+                            .openAssetFileDescriptor(uri, "r")) {
+
+                        assert fileDescriptor != null;
+                        long fileSize = fileDescriptor.getLength();
+
+                        if (fileSize > MAX_FILE_SIZE) {
+                            Toast.makeText(getApplicationContext(),
+                                    "File exceeds size limit",
+                                    Toast.LENGTH_LONG).show();
+
+                            return;
+                        }
+                    } catch (Exception e) {
+                        Log.e("SendActivity", "Error checking file size: " + e.getMessage());
+                    }
+
                     firebaseManager.getUserByName(searchInput.getText().toString())
                             .addOnCompleteListener(result -> {
                                 User user = result.getResult();
