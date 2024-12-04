@@ -1,7 +1,10 @@
 [versions]
 agp = "8.7.1"
-firebaseBom = "33.5.1"
+compiler = "4.16.0"
+firebaseBom = "33.6.0"
 firebaseUiAuth = "8.0.2"
+firebaseUiStorage = "7.2.0"
+glide = "4.16.0"
 gson = "2.11.0"
 firebaseUiFirestore = "8.0.2"
 junit = "4.13.2"
@@ -16,10 +19,9 @@ navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
 annotation = "1.6.0"
 activity = "1.9.3"
-tikaCore = "3.0.0"
-firebaseFirestore = "25.1.1"
 
 [libraries]
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
@@ -30,6 +32,8 @@ firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 firebase-storage = { module = "com.google.firebase:firebase-storage" }
 firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseUiAuth" }
 firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", version.ref = "firebaseUiFirestore" }
+firebaseui-firebase-ui-storage = { module = "com.firebaseui:firebase-ui-storage", version.ref = "firebaseUiStorage" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -43,8 +47,6 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-tika-core = { module = "org.apache.tika:tika-core", version.ref = "tikaCore" }
-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
