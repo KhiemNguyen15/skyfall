@@ -92,6 +92,6 @@ public class SendActivity extends AppCompatActivity {
     }
 
     public void sendUserFile() {
-        mGetContent.launch("image/*");
+        mGetContent.launch("*/*");
     }
 }
