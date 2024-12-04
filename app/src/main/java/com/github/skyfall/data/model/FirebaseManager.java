@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -137,30 +138,49 @@ public class FirebaseManager {
         return fileRef.putFile(fileUri, metadata);
     }
 
-    public Task<File> downloadFile(ShareRequest shareRequest) throws IOException {
+    public Task<File> downloadFile(ShareRequest shareRequest, Context context) throws IOException {
         StorageReference storageRef = mStorage.getReference();
         StorageReference fileRef = storageRef.child(shareRequest.getFileUri());
 
-        // Extract file extension
-        String fileType = shareRequest.getFileType()
-                .substring(shareRequest.getFileType().lastIndexOf("/") + 1);
+        File downloadsDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        if (downloadsDir == null) {
+            throw new IOException("Unable to access downloads directory");
+        }
+
         String originalFileName = shareRequest.getFileUri()
                 .substring(shareRequest.getFileUri().lastIndexOf('/') + 1);
 
-        // Build the final file name with the correct extension
-        String baseFileName = originalFileName + "." + fileType;
+        File finalFile = new File(downloadsDir, originalFileName);
 
-        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File finalFile = new File(downloadsDir, baseFileName);
+        // Ensure the file does not exist
+        if (finalFile.exists()) {
+            finalFile.delete();
+        }
 
         // Start the file download
-        return fileRef.getFile(finalFile).continueWithTask(task -> {
-            if (task.isSuccessful()) {
-                return Tasks.forResult(finalFile); // Return the downloaded file
-            } else {
-                throw Objects.requireNonNull(task.getException());
-            }
-        });
+        return fileRef.getFile(finalFile)
+                .addOnSuccessListener(taskSnapshot -> {
+                    Log.d("DownloadFile", "File downloaded successfully: " + finalFile.getAbsolutePath());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DownloadFile", "File download failed: ", e);
+                })
+                .addOnProgressListener(snapshot -> {
+                    long bytesTransferred = snapshot.getBytesTransferred();
+                    long totalBytes = snapshot.getTotalByteCount();
+                    Log.d("DownloadFile", "Progress: " + bytesTransferred + "/" + totalBytes);
+                })
+                .continueWithTask(task -> {
+                    if (task.isSuccessful()) {
+                        // Verify file size to avoid 0-byte files
+                        if (finalFile.length() == 0) {
+                            throw new IOException("Downloaded file is empty");
+                        }
+                        return Tasks.forResult(finalFile);
+                    } else {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                });
     }
 
     public Task<Void> deleteFile(String fileUri) {
