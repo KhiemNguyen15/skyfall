@@ -62,7 +62,10 @@ dependencies {
     implementation(libs.firebase.storage)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.ui.firestore)
+    implementation(libs.firebaseui.firebase.ui.storage)
 
     // Other dependencies
+    implementation(libs.glide)
     implementation(libs.gson)
+    annotationProcessor(libs.compiler)
 }
