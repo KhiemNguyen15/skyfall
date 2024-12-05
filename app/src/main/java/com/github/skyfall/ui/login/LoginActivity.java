@@ -16,7 +16,6 @@ import com.github.skyfall.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
-
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -84,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                                     case "ERROR_WEAK_PASSWORD":
                                         Toast.makeText(this, "Password must be at least 6 characters long.", Toast.LENGTH_SHORT).show();
                                         break;
-
                                 }
                             }
                         }

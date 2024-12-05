@@ -14,7 +14,6 @@ import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class FirebaseAuthActivity extends AppCompatActivity {
@@ -49,9 +48,8 @@ public class FirebaseAuthActivity extends AppCompatActivity {
     }
 
     private void launchGoogleSignIn() {
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.GoogleBuilder().build()
-        );
+        List<AuthUI.IdpConfig> providers = List.of(
+                new AuthUI.IdpConfig.GoogleBuilder().build());
 
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
