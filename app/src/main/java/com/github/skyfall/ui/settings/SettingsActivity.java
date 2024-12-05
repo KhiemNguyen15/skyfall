@@ -2,7 +2,6 @@ package com.github.skyfall.ui.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,17 +29,14 @@ public class SettingsActivity extends AppCompatActivity {
                     .commit();
         }
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-                    Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Could not logout", Toast.LENGTH_LONG).show();
-                }
+        logoutButton.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Could not logout", Toast.LENGTH_LONG).show();
             }
         });
     }
