@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText emailEditText = findViewById(R.id.emailEditText);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
         Button loginButton = findViewById(R.id.loginButton);
-        Button registerButton = findViewById(R.id.signupButton);
+        Button signupButton = findViewById(R.id.signupButton);
         TextView forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
 
         // Login button logic
@@ -49,13 +49,13 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(this, MainActivity.class));
                             finish();
                         } else {
-                            Toast.makeText(this, "Unknown username or password.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Unknown email or password.", Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
-        // Register button logic
-        registerButton.setOnClickListener(v -> {
+        // Sign Up button logic
+        signupButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
         forgotPasswordButton.setOnClickListener(v -> showForgotPasswordDialog());
     }
+
     private void showForgotPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Reset Password");
