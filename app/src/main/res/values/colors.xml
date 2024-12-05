@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#80808080</color>
 
     <color name="deep_orange_500">#FF6F61</color>   <!-- Sunset-inspired deep orange -->
     <color name="deep_orange_700">#E65100</color>   <!-- Darker variant for the primary color -->
