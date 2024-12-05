@@ -1,5 +1,6 @@
 package com.github.skyfall.ui.receive;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -84,6 +85,10 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
                     shareRequests.remove(position);
                     notifyItemRemoved(position);
                     Toast.makeText(holder.itemView.getContext(), "Denied Request", Toast.LENGTH_SHORT).show();
+
+                    if (shareRequests.isEmpty()) {
+                        ((ReceiveActivity) holder.itemView.getContext()).updateNoRequestsView();
+                    }
                 } else {
                     Toast.makeText(holder.itemView.getContext(), "Failed to Deny Request", Toast.LENGTH_SHORT).show();
                 }
@@ -97,11 +102,15 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
 
             // Simulate the removal of the item from the list after download completes
             try {
-                firebaseManager.downloadFile(request).addOnCompleteListener(task -> {
+                Context context = holder.itemView.getContext();
+                firebaseManager.downloadFile(request, context).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         shareRequests.remove(position);
                         notifyItemRemoved(position);
                         Toast.makeText(holder.itemView.getContext(), "File Downloaded", Toast.LENGTH_SHORT).show();
+                        if (shareRequests.isEmpty()) {
+                            ((ReceiveActivity) holder.itemView.getContext()).updateNoRequestsView();
+                        }
                     } else {
                         Toast.makeText(holder.itemView.getContext(), "Download Failed", Toast.LENGTH_SHORT).show();
                     }
@@ -125,19 +134,7 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
             fileName = "Unknown File"; // Fallback if structure is not as expected
         }
 
-        // Extract the file extension from fileType
-        String fileType = request.getFileType();
-        String fileExtension;
-
-        // Get the extension if fileType is in the form "type/subtype"
-        if (fileType.contains("/")) {
-            fileExtension = fileType.substring(fileType.lastIndexOf('/') + 1);
-        } else {
-            fileExtension = ""; // Fallback if the fileType is not in expected format
-        }
-
-        // Combine file name and extension
-        return fileName + (!fileExtension.isEmpty() ? "." + fileExtension : "");
+        return fileName;
     }
 
     @Override
