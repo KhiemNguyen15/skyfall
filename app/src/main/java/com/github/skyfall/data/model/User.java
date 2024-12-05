@@ -5,8 +5,7 @@ public class User {
     private String displayName;
     private String photoURL;
 
-    public User() {
-    }
+    public User() {}
 
     public String getUid() {
         return uid;
