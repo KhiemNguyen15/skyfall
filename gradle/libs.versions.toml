@@ -19,6 +19,9 @@ navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
 annotation = "1.6.0"
 activity = "1.9.3"
+firebaseFirestore = "25.1.1"
+preferenceKtx = "1.2.1"
+preference = "1.2.1"
 
 [libraries]
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
@@ -47,6 +50,9 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
+preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
