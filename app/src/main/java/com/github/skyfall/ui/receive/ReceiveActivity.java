@@ -3,6 +3,7 @@ package com.github.skyfall.ui.receive;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,24 +51,37 @@ public class ReceiveActivity extends AppCompatActivity {
         firebaseManager.getIncomingRequests().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<ShareRequest> requests = task.getResult();
-                if (requests != null) {
+                if (requests != null && !requests.isEmpty()) {
                     Log.d("ShareRequests", "Fetched " + requests.size() + " requests");
+
+                    // Update RecyclerView with the fetched requests
                     adapter.updateData(requests);
+                    binding.recyclerView.setVisibility(View.VISIBLE);
+                    binding.noRequestsTextView.setVisibility(View.GONE);
+
                     for (ShareRequest request : requests) {
                         Log.d("ShareRequests", "File: " + request.getFileUri());
                     }
                 } else {
                     Log.d("ShareRequests", "No requests found.");
+
+                    // No requests, show the "No requests found" text
+                    binding.noRequestsTextView.setVisibility(View.VISIBLE);
+                    binding.recyclerView.setVisibility(View.GONE);
                 }
             } else {
                 Log.e("ShareRequests", "Error fetching requests", task.getException());
+
+                binding.noRequestsTextView.setText("Error fetching requests. Please try again.");
+                binding.noRequestsTextView.setVisibility(View.VISIBLE);
+                binding.recyclerView.setVisibility(View.GONE);
             }
         });
     }
 
     private void onDownloadRequest(ShareRequest request) {
         try {
-            firebaseManager.downloadFile(request).addOnCompleteListener(task -> {
+            firebaseManager.downloadFile(request, this).addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     // Handle failure
                     Toast.makeText(
@@ -87,7 +101,10 @@ public class ReceiveActivity extends AppCompatActivity {
                 saveFileToPublicStorage(downloadedFile, fileName);
             });
         } catch (Exception e) {
-            Toast.makeText(this, "Error downloading file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    this,
+                    "Error downloading file: " + e.getMessage(),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -107,6 +124,16 @@ public class ReceiveActivity extends AppCompatActivity {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void updateNoRequestsView() {
+        if (adapter.getItemCount() == 0) {
+            binding.noRequestsTextView.setVisibility(View.VISIBLE);
+            binding.recyclerView.setVisibility(View.GONE);
+        } else {
+            binding.noRequestsTextView.setVisibility(View.GONE);
+            binding.recyclerView.setVisibility(View.VISIBLE);
         }
     }
 }
