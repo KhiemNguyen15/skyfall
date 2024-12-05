@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.skyfall.R;
-import com.github.skyfall.ui.login.LoginActivity;
+import com.github.skyfall.ui.login.FirebaseAuthActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -33,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(), FirebaseAuthActivity.class));
                 finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Could not logout", Toast.LENGTH_LONG).show();
