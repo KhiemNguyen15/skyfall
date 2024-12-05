@@ -103,7 +103,7 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
             // Simulate the removal of the item from the list after download completes
             try {
                 Context context = holder.itemView.getContext();
-                firebaseManager.downloadFile(request,context).addOnCompleteListener(task -> {
+                firebaseManager.downloadFile(request, context).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         shareRequests.remove(position);
                         notifyItemRemoved(position);

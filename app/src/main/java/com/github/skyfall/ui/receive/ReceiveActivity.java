@@ -81,7 +81,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
     private void onDownloadRequest(ShareRequest request) {
         try {
-            firebaseManager.downloadFile(request,this).addOnCompleteListener(task -> {
+            firebaseManager.downloadFile(request, this).addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     // Handle failure
                     Toast.makeText(
@@ -101,7 +101,10 @@ public class ReceiveActivity extends AppCompatActivity {
                 saveFileToPublicStorage(downloadedFile, fileName);
             });
         } catch (Exception e) {
-            Toast.makeText(this, "Error downloading file: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    this,
+                    "Error downloading file: " + e.getMessage(),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

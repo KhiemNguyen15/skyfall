@@ -184,7 +184,7 @@ public class FirebaseManager {
     }
 
     public Task<Void> deleteFile(String fileUri) {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(fileUri);
+        StorageReference storageRef = mStorage.getReference().child(fileUri);
         return storageRef.delete();
     }
 }
