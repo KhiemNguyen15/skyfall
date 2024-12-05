@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.ui.firestore)
     implementation(libs.firebaseui.firebase.ui.storage)
+    implementation(libs.play.services.auth)
 
     // Other dependencies
     implementation(libs.glide)
