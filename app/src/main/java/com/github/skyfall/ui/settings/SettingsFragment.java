@@ -39,20 +39,21 @@ public class SettingsFragment extends PreferenceFragmentCompat{
         firebaseManager = FirebaseManager.getInstance();
 
         //Each preference represents a setting.
-        SwitchPreferenceCompat notificationSwitch = findPreference("enableNotifs");
-        Preference clearHistoryButton = findPreference("clearHistory");
+
+        //SwitchPreferenceCompat notificationSwitch = findPreference("enableNotifs");
+        //Preference clearHistoryButton = findPreference("clearHistory");
         EditTextPreference usernameButton = findPreference("changeUsername");
         Preference passwordButton = findPreference("changePassword");
         Preference pfpButton = findPreference("changePfp");
 
-        if(notificationSwitch == null) {
+        /*if(notificationSwitch == null) {
             Toast.makeText(getActivity(), "Notification Switch is null", Toast.LENGTH_LONG).show();
             return;
         }
         if(clearHistoryButton == null) {
             Toast.makeText(getActivity(), "Clear History Button is null", Toast.LENGTH_LONG).show();
             return;
-        }
+        }*/
         if(usernameButton == null) {
             Toast.makeText(getActivity(), "Username Button is null", Toast.LENGTH_LONG).show();
             return;
@@ -76,16 +77,6 @@ public class SettingsFragment extends PreferenceFragmentCompat{
                         Toast.makeText(getActivity(), "Username has been changed to " + username, Toast.LENGTH_LONG).show();
                     }
                 });
-                return false;
-            }
-        });
-
-        passwordButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                //startActivity(new Intent(getActivity(), ChangePasswordActivity.class));
-
-
                 return false;
             }
         });
