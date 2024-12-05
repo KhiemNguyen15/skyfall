@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.Preference;
 
 import com.github.skyfall.R;
 
 public class SettingsActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +22,8 @@ public class SettingsActivity extends AppCompatActivity {
                     .replace(R.id.idFrameLayout, new SettingsFragment())
                     .commit();
         }
-
     }
+
     public Intent launchPasswordActivity() {
         return new Intent(this, ChangePasswordActivity.class);
     }
