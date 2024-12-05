@@ -9,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 public class HomeViewModel extends ViewModel {
-
     private final MutableLiveData<String> mText;
 
     public HomeViewModel() {
