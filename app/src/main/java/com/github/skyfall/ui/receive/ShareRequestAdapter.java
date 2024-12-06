@@ -81,18 +81,21 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
         }
 
         // Fetch and bind file size
-        firebaseManager.getStorageReference().child(request.getFileUri()).getMetadata().addOnSuccessListener(storageMetadata -> {
-            long fileSize = storageMetadata.getSizeBytes();
-            String fileSizeText = android.text.format.Formatter.formatFileSize(holder.itemView.getContext(), fileSize);
-            holder.fileSizeTextView.setText(String.format("%s", fileSizeText));
-        }).addOnFailureListener(e -> {
-            holder.fileSizeTextView.setText("Size: Unknown");
-        });
+        firebaseManager.getStorageReference()
+                .child(request.getFileUri())
+                .getMetadata()
+                .addOnSuccessListener(storageMetadata -> {
+                    long fileSize = storageMetadata.getSizeBytes();
+                    String fileSizeText = android.text.format.Formatter
+                            .formatFileSize(holder.itemView.getContext(), fileSize);
+                    holder.fileSizeTextView.setText(String.format("%s", fileSizeText));
+                }).addOnFailureListener(e -> {
+                    holder.fileSizeTextView.setText("Size: Unknown");
+                });
 
         holder.deleteButton.setOnClickListener(v -> {
             firebaseManager.deleteFile(request.getFileUri()).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-
                     shareRequests.remove(position);
                     notifyItemRemoved(position);
                     Toast.makeText(holder.itemView.getContext(), "Denied Request", Toast.LENGTH_SHORT).show();

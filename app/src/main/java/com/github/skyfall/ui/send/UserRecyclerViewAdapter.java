@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.github.skyfall.R;
+import com.github.skyfall.data.model.FirebaseManager;
 import com.github.skyfall.data.model.User;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -46,8 +46,8 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             user.setPhotoURL("profile_pictures/default_pfp.jpg");
         }
 
-        StorageReference profilePictureRef = FirebaseStorage.getInstance()
-                .getReference()
+        StorageReference profilePictureRef = FirebaseManager.getInstance()
+                .getStorageReference()
                 .child(user.getPhotoURL());
 
         Glide.with(sendActivity.getApplicationContext())
