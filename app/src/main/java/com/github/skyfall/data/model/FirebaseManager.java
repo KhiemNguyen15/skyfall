@@ -50,6 +50,10 @@ public class FirebaseManager {
         return instance;
     }
 
+    public StorageReference getStorageReference() {
+        return mStorage.getReference();
+    }
+
     public Task<List<ShareRequest>> getIncomingRequests() {
         return mFunctions.getHttpsCallable("getShareRequests")
                 .call()

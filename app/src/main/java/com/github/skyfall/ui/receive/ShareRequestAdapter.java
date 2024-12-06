@@ -80,10 +80,22 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
             holder.timestampTextView.setText("Unknown Timestamp");
         }
 
+        // Fetch and bind file size
+        firebaseManager.getStorageReference()
+                .child(request.getFileUri())
+                .getMetadata()
+                .addOnSuccessListener(storageMetadata -> {
+                    long fileSize = storageMetadata.getSizeBytes();
+                    String fileSizeText = android.text.format.Formatter
+                            .formatFileSize(holder.itemView.getContext(), fileSize);
+                    holder.fileSizeTextView.setText(String.format("%s", fileSizeText));
+                }).addOnFailureListener(e -> {
+                    holder.fileSizeTextView.setText("Size: Unknown");
+                });
+
         holder.deleteButton.setOnClickListener(v -> {
             firebaseManager.deleteFile(request.getFileUri()).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-
                     shareRequests.remove(position);
                     notifyItemRemoved(position);
                     Toast.makeText(holder.itemView.getContext(), "Denied Request", Toast.LENGTH_SHORT).show();
@@ -166,6 +178,7 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView deviceTextView;
         private final TextView fileTypeTextView;
+        private final TextView fileSizeTextView; // Added file size TextView
         private final ImageButton downloadIcon;
         private final TextView timestampTextView;
         private final ImageButton deleteButton;
@@ -174,6 +187,7 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
             super(binding.getRoot());
             deviceTextView = binding.deviceTextView;
             fileTypeTextView = binding.fileTypeTextView;
+            fileSizeTextView = binding.fileSizeTextView; // Initialize file size TextView
             downloadIcon = binding.downloadIcon;
             timestampTextView = binding.timestampTextView;
             deleteButton = binding.deleteButton;
