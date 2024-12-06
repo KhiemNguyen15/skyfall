@@ -13,6 +13,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -41,9 +42,12 @@ public class FirebaseAuthActivity extends AppCompatActivity {
         });
         findViewById(R.id.google_button).setOnClickListener(v -> launchGoogleSignIn());
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && user.isEmailVerified()) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
+        } else {
+            FirebaseAuth.getInstance().signOut(); // Ensure user is logged out
         }
     }
 
