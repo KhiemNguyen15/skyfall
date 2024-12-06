@@ -146,25 +146,28 @@ public class FirebaseManager {
         StorageReference storageRef = mStorage.getReference();
         StorageReference fileRef = storageRef.child(shareRequest.getFileUri());
 
-        File downloadsDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-        if (downloadsDir == null) {
-            throw new IOException("Unable to access downloads directory");
+        // Use public downloads directory
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (downloadsDir == null || (!downloadsDir.exists() && !downloadsDir.mkdirs())) {
+            throw new IOException("Failed to access or create the Downloads directory");
         }
 
-        String originalFileName = shareRequest.getFileUri()
-                .substring(shareRequest.getFileUri().lastIndexOf('/') + 1);
+        File finalFile = new File(downloadsDir, shareRequest.getFileUri()
+                .substring(shareRequest.getFileUri().lastIndexOf('/') + 1));
 
-        File finalFile = new File(downloadsDir, originalFileName);
-
-        // Ensure the file does not exist
+        // Check if the file already exists
         if (finalFile.exists()) {
-            finalFile.delete();
+            Log.d("DownloadFile", "File already exists: " + finalFile.getAbsolutePath());
+            throw new IOException("File already exists"); // Throw exception for duplicate handling
         }
 
-        // Start the file download
+        Log.d("DownloadFile", "Attempting to save file to: " + finalFile.getAbsolutePath());
+
+        // Download the file
         return fileRef.getFile(finalFile)
                 .addOnSuccessListener(taskSnapshot -> {
                     Log.d("DownloadFile", "File downloaded successfully: " + finalFile.getAbsolutePath());
+                    Log.d("DownloadFile", "Verified file size: " + finalFile.length());
                 })
                 .addOnFailureListener(e -> {
                     Log.e("DownloadFile", "File download failed: ", e);
@@ -189,6 +192,8 @@ public class FirebaseManager {
 
     public Task<Void> deleteFile(String fileUri) {
         StorageReference storageRef = mStorage.getReference().child(fileUri);
-        return storageRef.delete();
+        return storageRef.delete()
+                .addOnSuccessListener(aVoid -> Log.d("DeleteFile", "File deleted successfully from Firebase Storage."))
+                .addOnFailureListener(e -> Log.e("DeleteFile", "Failed to delete file from Firebase Storage: ", e));
     }
 }

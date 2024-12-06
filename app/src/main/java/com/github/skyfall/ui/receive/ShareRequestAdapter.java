@@ -1,6 +1,7 @@
 package com.github.skyfall.ui.receive;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import com.github.skyfall.data.model.User;
 import com.github.skyfall.data.model.ShareRequest;
 import com.github.skyfall.databinding.ItemShareRequestBinding;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -106,26 +108,45 @@ public class ShareRequestAdapter extends RecyclerView.Adapter<ShareRequestAdapte
 
         // Set up download button action
         holder.downloadIcon.setOnClickListener(v -> {
-            // Call the onDownloadListener when the icon is clicked
-            onDownloadListener.onDownloadRequest(request);
+            Context context = holder.itemView.getContext();
 
-            // Simulate the removal of the item from the list after download completes
             try {
-                Context context = holder.itemView.getContext();
                 firebaseManager.downloadFile(request, context).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        shareRequests.remove(position);
-                        notifyItemRemoved(position);
-                        Toast.makeText(holder.itemView.getContext(), "File Downloaded", Toast.LENGTH_SHORT).show();
-                        if (shareRequests.isEmpty()) {
-                            ((ReceiveActivity) holder.itemView.getContext()).updateNoRequestsView();
-                        }
+                        File downloadedFile = task.getResult();
+                        Log.d("Adapter", "File downloaded: " + downloadedFile.getAbsolutePath());
+
+                        // Proceed with deletion of the file from cloud storage
+                        firebaseManager.deleteFile(request.getFileUri()).addOnCompleteListener(deleteTask -> {
+                            if (deleteTask.isSuccessful()) {
+                                // Remove item from the list and notify RecyclerView
+                                shareRequests.remove(position);
+                                notifyItemRemoved(position);
+                                Toast.makeText(context, "File downloaded successfully.", Toast.LENGTH_SHORT).show();
+
+                                // If the list is empty, update the view
+                                if (shareRequests.isEmpty()) {
+                                    ((ReceiveActivity) context).updateNoRequestsView();
+                                }
+                            } else {
+                                Log.e("Adapter", "Error deleting file: ", deleteTask.getException());
+                                Toast.makeText(context, "Error deleting file from storage.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
-                        Toast.makeText(holder.itemView.getContext(), "Download Failed", Toast.LENGTH_SHORT).show();
+                        Throwable exception = task.getException();
+                        if (exception instanceof IOException && "File already exists".equals(exception.getMessage())) {
+                            Log.d("Adapter", "Duplicate file detected.");
+                            Toast.makeText(context, "File already exists.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("Adapter", "Error downloading file: ", exception);
+                            Toast.makeText(context, "Error: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.e("Adapter", "Error: ", e);
+                Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
