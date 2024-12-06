@@ -13,12 +13,12 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
 public class FirebaseAuthActivity extends AppCompatActivity {
     private static final int RC_GOOGLE_SIGN_IN = 123;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +36,26 @@ public class FirebaseAuthActivity extends AppCompatActivity {
         firebaseAppCheck.installAppCheckProviderFactory(
                 DebugAppCheckProviderFactory.getInstance());
 
+        mAuth = FirebaseAuth.getInstance();
+
         findViewById(R.id.email_button).setOnClickListener(v -> {
             // Navigate to the email/password Login screen
             startActivity(new Intent(this, LoginActivity.class));
         });
-        findViewById(R.id.google_button).setOnClickListener(v -> launchGoogleSignIn());
+        findViewById(R.id.google_button).setOnClickListener(v -> {
+            launchGoogleSignIn();
+        });
+    }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null && user.isEmailVerified()) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        } else {
-            FirebaseAuth.getInstance().signOut(); // Ensure user is logged out
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            if (mAuth.getCurrentUser() != null) {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }
         }
     }
 
