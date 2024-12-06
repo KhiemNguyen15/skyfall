@@ -48,7 +48,7 @@ public class FirebaseAuthActivity extends AppCompatActivity {
         });
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null && user.getEmail() != null && user.isEmailVerified()) {
+        if (user != null && (user.getEmail() == null || user.isEmailVerified())) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         } else {
