@@ -70,4 +70,5 @@
     <string name="send_file">Send File</string>
     <string name="send_page_title">SEND PAGE</string>
     <string name="user_name">User Name</string>
+    <string name="log_out">Log out</string>
 </resources>
