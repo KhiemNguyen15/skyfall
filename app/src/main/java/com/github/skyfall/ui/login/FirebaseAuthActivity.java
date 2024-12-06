@@ -18,6 +18,7 @@ import java.util.List;
 
 public class FirebaseAuthActivity extends AppCompatActivity {
     private static final int RC_GOOGLE_SIGN_IN = 123;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +36,26 @@ public class FirebaseAuthActivity extends AppCompatActivity {
         firebaseAppCheck.installAppCheckProviderFactory(
                 DebugAppCheckProviderFactory.getInstance());
 
+        mAuth = FirebaseAuth.getInstance();
+
         findViewById(R.id.email_button).setOnClickListener(v -> {
             // Navigate to the email/password Login screen
             startActivity(new Intent(this, LoginActivity.class));
         });
-        findViewById(R.id.google_button).setOnClickListener(v -> launchGoogleSignIn());
+        findViewById(R.id.google_button).setOnClickListener(v -> {
+            launchGoogleSignIn();
+        });
+    }
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            if (mAuth.getCurrentUser() != null) {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }
         }
     }
 
