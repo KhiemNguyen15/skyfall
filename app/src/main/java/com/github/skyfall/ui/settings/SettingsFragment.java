@@ -1,14 +1,11 @@
 package com.github.skyfall.ui.settings;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.EditTextPreference;
@@ -17,10 +14,6 @@ import androidx.preference.Preference;
 import com.github.skyfall.R;
 import com.github.skyfall.data.model.FirebaseManager;
 import com.github.skyfall.ui.login.LoginActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private FirebaseManager firebaseManager;
@@ -85,7 +78,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         deleteButton.setOnPreferenceClickListener(preference -> {
-
             AlertDialog.Builder builder = getBuilder();
 
             AlertDialog dialog = builder.create();
@@ -96,41 +88,29 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private AlertDialog.Builder getBuilder() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setCancelable(true);
-        builder.setTitle("Confirm account deletion");
-        builder.setMessage("Are you sure you want to delete your account?");
-        builder.setPositiveButton("Confirm",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setCancelable(true)
+                .setTitle("Confirm account deletion")
+                .setMessage("Are you sure you want to delete your account?");
 
-                        if(user != null) {
-                            user.delete()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(getContext(), "Your account has been deleted", Toast.LENGTH_LONG).show();
-                                            } else {
-                                                Toast.makeText(getContext(), "Account could not be deleted", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-                        } else {
-                            Toast.makeText(getContext(), "User could not be deleted", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        startActivity(new Intent(getContext(), LoginActivity.class));
-                        getActivity().finish();
-                    }
+        builder.setPositiveButton("Confirm",
+                (dialog, which) -> {
+                    firebaseManager.deleteUser()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Your account has been deleted", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getContext(), "Unable to delete account", Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                    requireActivity().finish();
                 });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
         });
+
         return builder;
     }
 }

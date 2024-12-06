@@ -115,6 +115,12 @@ public class FirebaseManager {
                 .continueWith(task -> null);
     }
 
+    public Task<Void> deleteUser() {
+        return mFunctions.getHttpsCallable("deleteUser")
+                .call()
+                .continueWith(task -> null);
+    }
+
     public UploadTask sendFile(Uri fileUri, String recipientUid, Context context) {
         StorageReference storageRef = mStorage.getReference();
 
