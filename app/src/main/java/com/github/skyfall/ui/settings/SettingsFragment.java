@@ -13,10 +13,11 @@ import androidx.preference.Preference;
 
 import com.github.skyfall.R;
 import com.github.skyfall.data.model.FirebaseManager;
-import com.github.skyfall.ui.login.LoginActivity;
+import com.github.skyfall.ui.login.FirebaseAuthActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private FirebaseManager firebaseManager;
+    public SettingsActivity activity;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
@@ -98,14 +99,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     firebaseManager.deleteUser()
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "Your account has been deleted", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Your account has been deleted", Toast.LENGTH_LONG).show();
+
+                                    Intent intent = new Intent(getActivity(), FirebaseAuthActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    requireActivity().finish();
                                 } else {
-                                    Toast.makeText(getContext(), "Unable to delete account", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Unable to delete account", Toast.LENGTH_LONG).show();
                                 }
                             });
-
-                    startActivity(new Intent(getContext(), LoginActivity.class));
-                    requireActivity().finish();
                 });
 
         builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
