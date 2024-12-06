@@ -33,7 +33,10 @@ public class SettingsActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), FirebaseAuthActivity.class));
+                // Clear the back stack and start the login activity
+                Intent intent = new Intent(getApplicationContext(), FirebaseAuthActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Could not logout", Toast.LENGTH_LONG).show();
