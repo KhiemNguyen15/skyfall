@@ -34,6 +34,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             Log.d("demo", "Delete Account Button is null");
             return;
         }
+
         usernameButton.setOnPreferenceChangeListener((preference, newValue) -> {
             String username = newValue.toString();
             firebaseManager.updateDisplayName(username).addOnCompleteListener(task -> {
@@ -44,6 +45,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             });
             return false;
         });
+
         deleteButton.setOnPreferenceClickListener(preference -> {
             AlertDialog.Builder builder = getBuilder();
             AlertDialog dialog = builder.create();
@@ -51,11 +53,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return false;
         });
     }
+
     private AlertDialog.Builder getBuilder() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setCancelable(true)
                 .setTitle("Confirm account deletion")
                 .setMessage("Are you sure you want to delete your account?");
+
         builder.setPositiveButton("Confirm",
                 (dialog, which) -> {
                     firebaseManager.deleteUser()
@@ -72,8 +76,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                 }
                             });
                 });
+
         builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
         });
+
         return builder;
     }
 }
