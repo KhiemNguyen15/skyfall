@@ -16,10 +16,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageButton hamburgerButton = findViewById(R.id.hamburgerButton);
-        ImageButton notificationButton = findViewById(R.id.notificationButton);
         ImageButton sendButton = findViewById(R.id.sendButton);
         ImageButton receiveButton = findViewById(R.id.receiveButton);
+        ImageButton settingsButton = findViewById(R.id.hamburgerButton);
 
         sendButton.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), SendActivity.class));
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), ReceiveActivity.class));
         });
 
-        hamburgerButton.setOnClickListener(v -> {
+        settingsButton.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         });
     }

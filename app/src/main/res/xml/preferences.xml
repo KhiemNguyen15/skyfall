@@ -3,33 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Notification">
-        <SwitchPreferenceCompat
-            android:key="enableNotifs"
-            android:title="Enable Notifications"
-            android:defaultValue="true"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="History">
-        <Preference
-            android:key="clearHistory"
-            android:title="Clear History"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="Account Information">
         <EditTextPreference
             android:key="changeUsername"
             android:title="Change Username"/>
         <Preference
-            android:key="changePassword"
-            android:title="Change Password"/>
-        <Preference
-            android:key="changePfp"
-            android:title="Change Profile Picture"/>
-        <Preference
             android:key="deleteAccount"
             android:title="Delete Account"/>
     </PreferenceCategory>
+
 </PreferenceScreen>
