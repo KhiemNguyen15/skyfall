@@ -3,6 +3,7 @@ package com.github.skyfall.ui.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.skyfall.MainActivity;
 import com.github.skyfall.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -29,9 +31,12 @@ public class LoginActivity extends AppCompatActivity {
         EditText passwordEditText = findViewById(R.id.passwordEditText);
         Button loginButton = findViewById(R.id.loginButton);
         Button signupButton = findViewById(R.id.signupButton);
+        Button resendVerificationButton = findViewById(R.id.resendVerificationButton);
         TextView forgotPasswordButton = findViewById(R.id.forgotPasswordButton);
 
-        // Login button logic
+        // Initially hide the Resend Verification Email button
+        resendVerificationButton.setVisibility(View.GONE);
+
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
@@ -44,9 +49,22 @@ public class LoginActivity extends AppCompatActivity {
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Login successful.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(this, MainActivity.class));
-                            finish();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            if (user != null && user.isEmailVerified()) {
+                                Toast.makeText(this, "Login successful.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(this, MainActivity.class));
+                                finish();
+                            } else {
+                                Toast.makeText(this, "Please verify your email before logging in.", Toast.LENGTH_SHORT).show();
+                                firebaseAuth.signOut();
+
+                                // Show the resend verification button
+                                resendVerificationButton.setVisibility(View.VISIBLE);
+                                resendVerificationButton.setEnabled(true); // Ensure it's enabled initially
+                                resendVerificationButton.setOnClickListener(view -> {
+                                    resendVerificationEmailWithCooldown(resendVerificationButton, user);
+                                });
+                            }
                         } else {
                             Toast.makeText(this, "Unknown email or password.", Toast.LENGTH_SHORT).show();
                         }
@@ -66,10 +84,18 @@ public class LoginActivity extends AppCompatActivity {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // Registration is successful
-                            Toast.makeText(this, "Registration successful.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(this, MainActivity.class));
-                            finish();
+                            // Send verification email
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            if (user != null) {
+                                user.sendEmailVerification()
+                                        .addOnCompleteListener(emailTask -> {
+                                            if (emailTask.isSuccessful()) {
+                                                Toast.makeText(this, "Registration successful. Verify your email before logging in.", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(this, "Failed to send verification email.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
                         } else {
                             // Handle exceptions
                             if (task.getException() != null) {
@@ -124,5 +150,29 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(this, "No account associated with this email.", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+    private void resendVerificationEmailWithCooldown(Button resendVerificationButton, FirebaseUser user) {
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "Verification email sent. Check your inbox.", Toast.LENGTH_SHORT).show();
+
+                            // Disable the button and start the cooldown timer
+                            resendVerificationButton.setEnabled(false);
+                            resendVerificationButton.setText("Please wait...");
+
+                            // Re-enable after a delay (60 seconds)
+                            resendVerificationButton.postDelayed(() -> {
+                                resendVerificationButton.setEnabled(true);
+                                resendVerificationButton.setText("Resend Verification Email");
+                            }, 60000); // 60,000 ms = 60 seconds
+                        } else {
+                            Toast.makeText(this, "Failed to send verification email. Please try again later.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            Toast.makeText(this, "Unable to resend verification email. Please log in again.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
