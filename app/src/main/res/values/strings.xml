@@ -13,7 +13,7 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_firebase_auth">FirebaseAuthActivity</string>
     <string name="download_icon">Download</string>
-    <string name="receive_page_title">Receive Page</string>
+    <string name="receive_page_title">RECEIVE</string>
     <string name="receive_page_icon">Receive</string>
     <string name="delete_request">delete</string>
     <string name="prompt_email">Email</string>
@@ -68,7 +68,7 @@
     </string>
     <string name="username">Username</string>
     <string name="send_file">Send File</string>
-    <string name="send_page_title">SEND PAGE</string>
+    <string name="send_page_title">SEND</string>
     <string name="user_name">User Name</string>
     <string name="log_out">Log out</string>
 </resources>

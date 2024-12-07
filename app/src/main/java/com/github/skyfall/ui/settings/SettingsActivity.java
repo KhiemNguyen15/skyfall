@@ -12,6 +12,7 @@ import com.github.skyfall.ui.login.FirebaseAuthActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,20 +20,23 @@ public class SettingsActivity extends AppCompatActivity {
 
         Button logoutButton = findViewById(R.id.logoutButton);
 
+        // Set up other settings in preferences.xml
         if (findViewById(R.id.idFrameLayout) != null) {
             if (savedInstanceState != null) {
                 return;
             }
-
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.idFrameLayout, new SettingsFragment())
                     .commit();
         }
 
+        // Set onClickListener for logout button
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
+
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 Toast.makeText(getApplicationContext(), "Logout successful", Toast.LENGTH_LONG).show();
+
                 // Clear the back stack and start the login activity
                 Intent intent = new Intent(getApplicationContext(), FirebaseAuthActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -42,9 +46,5 @@ public class SettingsActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Could not logout", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    public Intent launchPasswordActivity() {
-        return new Intent(this, ChangePasswordActivity.class);
     }
 }

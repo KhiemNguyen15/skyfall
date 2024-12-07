@@ -36,6 +36,7 @@ public class SendActivity extends AppCompatActivity {
             new ActivityResultCallback<>() {
                 @Override
                 public void onActivityResult(Uri uri) {
+                    // Check if file is within correct file size limitations
                     try (AssetFileDescriptor fileDescriptor = getApplicationContext()
                             .getContentResolver()
                             .openAssetFileDescriptor(uri, "r")) {
@@ -54,10 +55,12 @@ public class SendActivity extends AppCompatActivity {
                         Log.e("SendActivity", "Error checking file size: " + e.getMessage());
                     }
 
+                    // Search for specific user using input from recycler view
                     firebaseManager.getUserByName(searchInput.getText().toString())
                             .addOnCompleteListener(result -> {
                                 User user = result.getResult();
 
+                                // Set listeners to show different messages if file was successfully sent or not
                                 firebaseManager.sendFile(uri, user.getUid(), getApplicationContext())
                                         .addOnFailureListener(exception ->
                                                 Toast.makeText(
@@ -85,6 +88,8 @@ public class SendActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.users_RecyclerView);
 
         searchInput.requestFocus();
+
+        // onClickListener for searchButton
         searchButton.setOnClickListener(v -> {
             String searchTerm = searchInput.getText().toString();
 
@@ -93,6 +98,7 @@ public class SendActivity extends AppCompatActivity {
                 return;
             }
 
+            // Search recycler view for user using searchTerm (user input)
             setupSearchRecyclerView(searchTerm);
         });
     }
@@ -101,6 +107,7 @@ public class SendActivity extends AppCompatActivity {
         ArrayList<User> users = new ArrayList<>();
         Task<User> u = firebaseManager.getUserByName(searchTerm);
 
+        // Get user from searching Firestore by username
         u.addOnCompleteListener(result -> {
             try {
                 users.add(u.getResult());
@@ -108,6 +115,7 @@ public class SendActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 recyclerView.setAdapter(adapter);
             } catch (Exception e) {
+                // If search term results in user == null
                 Toast.makeText(this, "User does not exist", Toast.LENGTH_LONG).show();
             }
         });

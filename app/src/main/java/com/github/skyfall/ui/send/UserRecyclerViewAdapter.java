@@ -42,6 +42,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         holder.user = user;
         holder.usernameText.setText(user.getDisplayName());
 
+        // Display profile picture of user being searched
         if (user.getPhotoURL() == null) {
             user.setPhotoURL("profile_pictures/default_pfp.jpg");
         }
@@ -68,6 +69,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         public UserModelViewHolder(@NonNull View itemView) {
             super(itemView);
+            // Fields for each item in recycler view
             usernameText = itemView.findViewById(R.id.username_text);
             profilePicture = itemView.findViewById(R.id.profile_picture_view);
             sendFileButton = itemView.findViewById(R.id.recyclerRowButton);
