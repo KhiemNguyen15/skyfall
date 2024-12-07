@@ -17,7 +17,6 @@ import com.github.skyfall.ui.login.FirebaseAuthActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private FirebaseManager firebaseManager;
-    public SettingsActivity activity;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
