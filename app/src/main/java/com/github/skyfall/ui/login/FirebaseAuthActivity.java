@@ -43,14 +43,16 @@ public class FirebaseAuthActivity extends AppCompatActivity {
             // Navigate to the email/password Login screen
             startActivity(new Intent(this, LoginActivity.class));
         });
-        findViewById(R.id.google_button).setOnClickListener(v -> launchGoogleSignIn());
+        findViewById(R.id.google_button).setOnClickListener(v -> {
+            launchGoogleSignIn();
+        });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null && user.isEmailVerified()) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null && user.getEmail() != null && user.isEmailVerified()) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         } else {
-            FirebaseAuth.getInstance().signOut(); // Ensure user is logged out
+            mAuth.signOut(); // Ensure user is logged out
         }
     }
 
