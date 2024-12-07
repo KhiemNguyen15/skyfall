@@ -2,7 +2,9 @@
 
 ## Introduction
 
-Welcome to **SkyFall**, a comprehensive file-sharing solution designed for seamless and secure communication. Whether you're looking to share documents, images, videos, or any other type of file, SkyFall offers a streamlined experience for both sending and receiving files between users. Built using Java, this application uses Firebase for authentication and storage, ensuring that your data is safe and accessible only to authorized users. SkyFall is designed with simplicity and efficiency in mind. Upon logging in or signing up with their email, users are greeted with a clean and intuitive interface. Whether you're a professional managing large files or a casual user sharing photos, SkyFall is built to cater to your needs. Our team is committed to continuously improving the application to provide the best possible user experience. 
+Welcome to **SkyFall**! A comprehensive file-sharing solution designed for seamless and secure communication. Whether you're looking to share documents, images, videos, or any other type of file, SkyFall offers a streamlined experience for both sending and receiving files between users. 
+
+Built using Java, this application uses Firebase for authentication and storage, ensuring that your data is safe and accessible only to authorized users. SkyFall is designed with simplicity and efficiency in mind. Upon logging in or signing up with their email, users are greeted with a clean and intuitive interface. Whether you're a professional managing large files or a casual user sharing photos, SkyFall is built to cater to your needs. 
 
 -----------------------------------------------------------------------------------------------------------------
 
@@ -19,10 +21,10 @@ Welcome to **SkyFall**, a comprehensive file-sharing solution designed for seaml
 
 ## Contributors 
 This project was developed by the following team members: 
-- **Khiem Nguyen** : https://github.com/KhiemNguyen15
-- **Zachary Ohlenforst** : https://github.com/zachattack168
-- **Faaizah Joita** : https://github.com/JoyJoita
-- **Justin Lopez** : https://github.com/Justin-N-Lopez
+- [**Khiem Nguyen**](https://github.com/KhiemNguyen15)
+- [**Zachary Ohlenforst**](https://github.com/zachattack168)
+- [**Faaizah Joita**](https://github.com/JoyJoita)
+- [**Justin Lopez**](https://github.com/Justin-N-Lopez)
 
 Thank you to all contributors for their hard work and dedication.
 
@@ -58,7 +60,7 @@ Thank you to all contributors for their hard work and dedication.
 
 -----------------------------------------------------------------------------------------------------------------
 
-### Requirements 
+## Requirements 
 
 - **Android Device:**  Android devices running Android 8.1 or higher.
 - **IOS Device:** App is not yet available for IOS sytems.
