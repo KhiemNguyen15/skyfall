@@ -14,8 +14,6 @@ Built using Java, this application uses Firebase for authentication and storage,
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
-- [Known Issues](#known-issues)
 
 -----------------------------------------------------------------------------------------------------------------
 
