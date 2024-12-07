@@ -35,6 +35,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return;
         }
 
+        // onClickListener for username
         usernameButton.setOnPreferenceChangeListener((preference, newValue) -> {
             String username = newValue.toString();
             firebaseManager.updateDisplayName(username).addOnCompleteListener(task -> {
@@ -46,6 +47,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return false;
         });
 
+        // onClickListener for deleteButton
         deleteButton.setOnPreferenceClickListener(preference -> {
             AlertDialog.Builder builder = getBuilder();
             AlertDialog dialog = builder.create();
@@ -55,11 +57,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private AlertDialog.Builder getBuilder() {
+        // Create dialog box to ask user to confirm deleting their account
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setCancelable(true)
                 .setTitle("Confirm account deletion")
                 .setMessage("Are you sure you want to delete your account?");
 
+        // Set confirmation button
         builder.setPositiveButton("Confirm",
                 (dialog, which) -> {
                     firebaseManager.deleteUser()
@@ -67,6 +71,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getActivity(), "Your account has been deleted", Toast.LENGTH_LONG).show();
 
+                                    // Clear the back stack and start the login activity
                                     Intent intent = new Intent(getActivity(), FirebaseAuthActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
@@ -77,6 +82,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             });
                 });
 
+        // Denial button closes dialog box, but does nothing else
         builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
         });
 

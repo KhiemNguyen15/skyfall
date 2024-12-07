@@ -20,6 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         Button logoutButton = findViewById(R.id.logoutButton);
 
+        // Set up other settings in preferences.xml
         if (findViewById(R.id.idFrameLayout) != null) {
             if (savedInstanceState != null) {
                 return;
@@ -28,6 +29,8 @@ public class SettingsActivity extends AppCompatActivity {
                     .replace(R.id.idFrameLayout, new SettingsFragment())
                     .commit();
         }
+
+        // Set onClickListener for logout button
         logoutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
 
