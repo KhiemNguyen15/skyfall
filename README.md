@@ -7,13 +7,13 @@ Welcome to **SkyFall**, a comprehensive file-sharing solution designed for seaml
 -----------------------------------------------------------------------------------------------------------------
 
 ## Table of Contents
-- [Contributors](#contributors)
-- [Features](#features)
-- [Requirements](#requirements)
-- [Configuration](#configuration)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Troubleshooting](#troubleshooting)
+- Contributors
+- Features
+- Requirements
+- Installation
+- Usage
+- Troubleshooting
+- Known Issues
 
 -----------------------------------------------------------------------------------------------------------------
 
@@ -60,9 +60,9 @@ Thank you to all contributors for their hard work and dedication.
 
 ### Requirements 
 
-- **Android Device**  Android devices running Android 8.1 or higher.
-- **IOS Device** App is not yet available for IOS sytems.
-- **Internet Access** Required for authentication and file transfers using Firebase. 
+- **Android Device:**  Android devices running Android 8.1 or higher.
+- **IOS Device:** App is not yet available for IOS sytems.
+- **Internet Access:** Required for authentication and file transfers using Firebase. 
 
 -----------------------------------------------------------------------------------------------------------------
 
@@ -128,7 +128,9 @@ Please ensure your device meets the minimum requirements for optimal performance
 
 ## Known Issues
 
-  - **Search Delays**: Searching for users may take longer in databases with a large number of entries.  
-  - **Large File Uploads**: Files larger than 50MB might fail or cause timeouts due to Firebase limitations.  
+  - **Search Delays**: Searching for users may take longer in databases with a large number of entries.
+    
+  - **Large File Uploads**: Files larger than 50MB might fail or cause timeouts due to Firebase limitations.
+    
   - **UI Responsiveness**: Lower-end devices may experience minor lag when navigating through the app.  
 
