@@ -8,12 +8,11 @@ Welcome to **SkyFall**, a comprehensive file-sharing solution designed for seaml
 
 ## Table of Contents
 - [Contributors](#contributors)
-- [Features](#features) 
+- [Features](#features)
 - [Requirements](#requirements)
 - [Configuration](#configuration)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Examples](#examples)
 - [Troubleshooting](#troubleshooting)
 
 -----------------------------------------------------------------------------------------------------------------
@@ -32,12 +31,14 @@ Thank you to all contributors for their hard work and dedication.
 ## Features
 
 - **User Authentication**  
-  Users can log in or sign up using their email. Secure account management ensures privacy and data integrity.
+  Users can log in or sign up using their email. Secure account management ensures privacy and data integrity. Session Managment allows users to remain logged in until they choose to log out.
 
 - **Home Screen**  
-  The central hub for navigating the app:  
-  - Access the "Send Page."  
-  - Access the "Receive Page."  
+  Acts as the central hub for navigating the app.
+  Key functionalities include: 
+  - Accessing the "Send Page" to send files.  
+  - Access the "Receive Page" to manage and recieve incoming files. 
+  - Accessing the "Settings Page" for profile and session management.
 
 - **Send Page**  
   Users can:  
@@ -50,33 +51,49 @@ Thank you to all contributors for their hard work and dedication.
   - View a list of files sent by other users.  
   - See details like sender username, device information, and file origin.  
   - Accept or reject incoming files.  
-  - Return to the Home Screen after managing files.  
+  - Return to the Home Screen after managing files.
+ 
+- **Settings Page**
+  This page allows users to customize thier user profiles by allowing users to change thier profile picture and update thier username. Additionally, this is where users will be able to log out. Logining out will redirect the user to the User Authentication screen.
 
 -----------------------------------------------------------------------------------------------------------------
 
 ### Requirements 
 
-- **Java Development Kit (JDK) 17+**  
+- **Android Device**  Android devices running Android 8.1 or higher.
+- **IOS Device** App is not yet available for IOS sytems.
 - **Internet Access** Required for authentication and file transfers using Firebase. 
-- **Firebase Account** Ensure Firebase is properly configured for user authentication and file storage.
 
 -----------------------------------------------------------------------------------------------------------------
 
 ## Installation
 
-Clone the repository:
-   git clone https://github.com/KhiemNguyen15/skyfall.git
+SkyFall is exclusively available for Android devices running Android 8.1 (Oreo) or higher. To start using SkyFall:
+
+1. **Download from Google Play Store:**
+   - Open the Google Play Store on your Android device.
+   - Search for "SkyFall" in the search bar.
+   - Tap the Install button to download and install the app.
+
+2. **Launch the App:**
+   - Once installed, open SkyFall from your app drawer or home screen.
+
+3. **Sign Up or Log In:**
+   - New users can create an account with their email and password.
+   - Existing users can log in to access their account and start sharing files.
+
+Please ensure your device meets the minimum requirements for optimal performance. SkyFall is not available for iOS or other platforms at this time.
+
 
 -----------------------------------------------------------------------------------------------------------------
 
 ## Usage
 
-1. **Run the Application**:  
-   Use your IDE or command line to start the application.
-   Add your Firebase configuration file (google-services.json).
-   Ensure authentication and storage services are enabled in your Firebase project.
+1. **Install The App**:  
+   - From your android device, naviaget to the Play Store and search "SkyFall" then download the app.
    
 2. **Login or Sign Up**:  
+   - Upon opening the app, you will be directed to the user authentication page.
    - Enter your email to create an account or log in.  
    - Upon success, you will be directed to the Home Screen.
 
